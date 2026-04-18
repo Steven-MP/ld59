@@ -27,4 +27,10 @@ func _ready():
 	if name == "Earth":
 		add_to_group("earth")
 		add_to_group("connectable")
+	else:
+		_add_indicator()
 
+func _add_indicator():
+	var indicator = load("res://scripts/DataIndicator.gd").new()
+	indicator.source = self
+	add_child(indicator)

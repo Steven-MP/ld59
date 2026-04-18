@@ -37,3 +37,6 @@ func _process(delta):
 
 func _ready():
 	add_to_group("connectable")
+	var indicator = load("res://scripts/DataIndicator.gd").new()
+	indicator.source = self
+	add_child(indicator)

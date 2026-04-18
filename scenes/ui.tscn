@@ -21,5 +21,32 @@ text = "Place Radar"
 layout_mode = 2
 text = "Place Satellite"
 
+[node name="GameOverScreen" type="ColorRect" parent="." unique_id=887341200]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.7)
+visible = false
+
+[node name="VBox" type="VBoxContainer" parent="GameOverScreen" unique_id=112938401]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -40.0
+offset_right = 100.0
+offset_bottom = 40.0
+alignment = 1
+
+[node name="Title" type="Label" parent="GameOverScreen/VBox" unique_id=223847100]
+layout_mode = 2
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="FinalScore" type="Label" parent="GameOverScreen/VBox" unique_id=334756200]
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+
 [connection signal="pressed" from="VBoxContainer/Button (Place Radar)" to="." method="_on_place_radar_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button (Place Satellite)" to="." method="_on_place_satellite_pressed"]
