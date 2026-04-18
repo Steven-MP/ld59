@@ -56,6 +56,14 @@ layout_mode = 2
 text = ""
 horizontal_alignment = 1
 
+[node name="Restart" type="Button" parent="GameOverScreen/VBox" unique_id=445865301]
+layout_mode = 2
+text = "Restart"
+
+[node name="QuitToMenu" type="Button" parent="GameOverScreen/VBox" unique_id=556974402]
+layout_mode = 2
+text = "Quit to Menu"
+
 [node name="UpgradeScreen" type="ColorRect" parent="." unique_id=445665300]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -91,6 +99,8 @@ text = ""
 layout_mode = 2
 text = ""
 
+[connection signal="pressed" from="GameOverScreen/VBox/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="GameOverScreen/VBox/QuitToMenu" to="." method="_on_quit_to_menu_pressed"]
 [connection signal="pressed" from="VBoxContainer/BtnWideRadar" to="." method="_on_btn_wide_radar_pressed"]
 [connection signal="pressed" from="VBoxContainer/BtnStandardRadar" to="." method="_on_btn_standard_radar_pressed"]
 [connection signal="pressed" from="VBoxContainer/BtnStandardSat" to="." method="_on_btn_standard_sat_pressed"]

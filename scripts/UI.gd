@@ -112,6 +112,16 @@ func _on_option_b_pressed():
 		return
 	_apply_upgrade(_pending_options[1])
 
+func _on_restart_pressed():
+	GameState.reset()
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/main.tscn")
+
+func _on_quit_to_menu_pressed():
+	GameState.reset()
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
 func _on_btn_wide_radar_pressed():
 	object_manager.start_placement(OM.PlacementType.RADAR_WIDE)
 
