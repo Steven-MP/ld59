@@ -9,6 +9,10 @@ script = ExtResource("1_nt7q6")
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="ScoreLabel" type="Label" parent="VBoxContainer" unique_id=312841900]
+layout_mode = 2
+text = "Downloaded: 0 GB"
+
 [node name="Button (Place Radar)" type="Button" parent="VBoxContainer" unique_id=676477425]
 layout_mode = 2
 text = "Place Radar"

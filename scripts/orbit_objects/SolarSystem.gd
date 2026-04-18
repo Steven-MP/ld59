@@ -12,9 +12,8 @@ func spawn_planets():
 
 func create_planet(name: String, orbit_radius: float, center: Node2D, speed: float):
 	var planet = planet_scene.instantiate()
-	add_child(planet)
-	
 	planet.name = name
+	add_child(planet)
 	planet.orbit_radius = orbit_radius
 	planet.orbit_center = center
 	planet.orbit_speed = speed
@@ -29,7 +28,7 @@ func create_planet(name: String, orbit_radius: float, center: Node2D, speed: flo
 		planet.position = Vector2.ZERO
 		
 var planet_queue = [
-	{ "name": "Mars", "orbit_radius": 200, "speed": 0.2 },
+	{ "name": "Mars", "orbit_radius": 400, "speed": 0.2 },
 	{ "name": "Jupiter", "orbit_radius": 350, "speed": 0.1 },
 	{ "name": "Saturn", "orbit_radius": 500, "speed": 0.07 }
 ]
