@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cijm7gc0ojv53"]
+
+[ext_resource type="Script" uid="uid://dx5de5utif3kx" path="res://scripts/orbit_objects/Planet.gd" id="1_cktii"]
+[ext_resource type="Texture2D" uid="uid://821ob18e0rln" path="res://assets/sprites/planet.png" id="2_h8ms6"]
+
+[node name="Planet" type="Node2D" unique_id=1208323296]
+script = ExtResource("1_cktii")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1386024194]
+texture = ExtResource("2_h8ms6")

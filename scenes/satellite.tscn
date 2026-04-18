@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://du4qlnscom4ky"]
+
+[ext_resource type="Script" uid="uid://bdnjyv7uqfw0k" path="res://scripts/orbit_objects/Satellite.gd" id="1_spm53"]
+[ext_resource type="Texture2D" uid="uid://c2rjhgprb2vlu" path="res://assets/sprites/sat.png" id="2_icwpa"]
+
+[node name="Satellite" type="Node2D" unique_id=49122880]
+script = ExtResource("1_spm53")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1803756682]
+texture = ExtResource("2_icwpa")

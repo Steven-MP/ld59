@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c0iafohdluxyp"]
+
+[ext_resource type="Script" uid="uid://c4at052grwtu0" path="res://scripts/UI.gd" id="1_nt7q6"]
+
+[node name="UI" type="CanvasLayer" unique_id=758622985]
+script = ExtResource("1_nt7q6")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1399731526]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button (Place Radar)" type="Button" parent="VBoxContainer" unique_id=676477425]
+layout_mode = 2
+text = "Place Radar"
+
+[node name="Button (Place Satellite)" type="Button" parent="VBoxContainer" unique_id=213962571]
+layout_mode = 2
+text = "Place Satellite"
+
+[connection signal="pressed" from="VBoxContainer/Button (Place Radar)" to="." method="_on_place_radar_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button (Place Satellite)" to="." method="_on_place_satellite_pressed"]

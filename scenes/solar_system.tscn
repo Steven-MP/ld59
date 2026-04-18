@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bhxqvstxwo26w"]
+
+[ext_resource type="Script" uid="uid://dga0qp0w5b0fr" path="res://scripts/orbit_objects/SolarSystem.gd" id="1_228jm"]
+[ext_resource type="PackedScene" uid="uid://cijm7gc0ojv53" path="res://scenes/planet.tscn" id="2_tjb5t"]
+[ext_resource type="Texture2D" uid="uid://cpqduhjblto2" path="res://assets/sprites/sun.png" id="3_tjb5t"]
+
+[node name="SolarSystem" type="Node2D" unique_id=283654343]
+script = ExtResource("1_228jm")
+planet_scene = ExtResource("2_tjb5t")
+
+[node name="Sun" type="Node2D" parent="." unique_id=2122931305]
+
+[node name="Sprite2D" type="Sprite2D" parent="Sun" unique_id=223279926]
+texture = ExtResource("3_tjb5t")

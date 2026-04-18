@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dswa3y4eewbkc"]
+
+[ext_resource type="Script" uid="uid://di7rvavty2y7g" path="res://scripts/orbit_objects/OrbitObject.gd" id="1_1blvl"]
+
+[node name="OrbitObject" type="Node2D" unique_id=1318072484]
+script = ExtResource("1_1blvl")

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://duv802tjyohd8"]
+
+[ext_resource type="Script" uid="uid://c2f01youwe2di" path="res://scripts/Game.gd" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://cyrym2rlw78h2" path="res://scenes/connection_manager.tscn" id="2_p57ef"]
+[ext_resource type="PackedScene" uid="uid://dlv6qhspvvfur" path="res://scenes/data_manager.tscn" id="3_u5sy4"]
+[ext_resource type="PackedScene" uid="uid://cyeic0wfql6sn" path="res://scenes/object_manager.tscn" id="4_gee14"]
+[ext_resource type="PackedScene" uid="uid://bhxqvstxwo26w" path="res://scenes/solar_system.tscn" id="5_0tnpc"]
+[ext_resource type="PackedScene" uid="uid://c0iafohdluxyp" path="res://scenes/ui.tscn" id="6_vtaks"]
+
+[node name="Game" type="Node2D" unique_id=620067186]
+script = ExtResource("1_uwrxv")
+
+[node name="ConnectionManager" parent="." unique_id=522570644 instance=ExtResource("2_p57ef")]
+
+[node name="DataManager" parent="." unique_id=249567321 instance=ExtResource("3_u5sy4")]
+
+[node name="ObjectManager" parent="." unique_id=1734409104 instance=ExtResource("4_gee14")]
+
+[node name="SolarSystem" parent="." unique_id=283654343 instance=ExtResource("5_0tnpc")]
+
+[node name="UI" parent="." unique_id=55848463 instance=ExtResource("6_vtaks")]

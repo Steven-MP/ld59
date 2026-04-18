@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bnewwevbt35lt"]
+
+[ext_resource type="Script" uid="uid://cg6a6wtcqs0qd" path="res://scripts/structures/radar.gd" id="1_vnohn"]
+[ext_resource type="Texture2D" uid="uid://cg8gyv7nm05i3" path="res://assets/sprites/radar.png" id="2_23uor"]
+
+[node name="Radar" type="Node2D" unique_id=1551084122]
+script = ExtResource("1_vnohn")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=746314746]
+texture = ExtResource("2_23uor")

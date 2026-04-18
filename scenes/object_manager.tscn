@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cyeic0wfql6sn"]
+
+[ext_resource type="Script" uid="uid://c4s0a3sgxljfr" path="res://scripts/ObjectManager.gd" id="1_r1iva"]
+[ext_resource type="PackedScene" uid="uid://bnewwevbt35lt" path="res://scenes/radar.tscn" id="2_wvywh"]
+[ext_resource type="PackedScene" uid="uid://du4qlnscom4ky" path="res://scenes/satellite.tscn" id="3_ygsik"]
+[ext_resource type="PackedScene" uid="uid://dshbhjcbw3nh3" path="res://scenes/placement_ghost.tscn" id="4_wvywh"]
+
+[node name="ObjectManager" type="Node2D" unique_id=727759393]
+script = ExtResource("1_r1iva")
+radar_scene = ExtResource("2_wvywh")
+satellite_scene = ExtResource("3_ygsik")
+ghost_scene = ExtResource("4_wvywh")

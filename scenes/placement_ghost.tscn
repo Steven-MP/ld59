@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dshbhjcbw3nh3"]
+
+[ext_resource type="Script" uid="uid://bupmpggr5pmcf" path="res://scripts/PlacementGhost.gd" id="1_feoqj"]
+
+[node name="PlacementGhost" type="Node2D" unique_id=416351694]
+script = ExtResource("1_feoqj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=194313169]

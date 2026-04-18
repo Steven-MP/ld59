@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cyrym2rlw78h2"]
+
+[ext_resource type="Script" uid="uid://ckvrtrsngs4hc" path="res://scripts/ConnectionManager.gd" id="1_uubqg"]
+
+[node name="ConnectionManager" type="Node2D" unique_id=738023367]
+script = ExtResource("1_uubqg")
