@@ -13,7 +13,6 @@ var surface_angle := 0.0
 
 var stored_data := 0.0
 @export var max_storage := 50.0
-@export var data_rate := 3.0
 
 func _process(delta):
 	if planet == null:
@@ -27,13 +26,7 @@ func _process(delta):
 	global_position = planet.global_position + direction * (planet_radius + radius_offset)
 	global_rotation = direction.angle()
 
-	if planet.name != "Earth":
-		stored_data += data_rate * delta
-
 	stored_data = min(stored_data, max_storage)
 
 func _ready():
 	add_to_group("connectable")
-	var indicator = load("res://scripts/DataIndicator.gd").new()
-	indicator.source = self
-	add_child(indicator)

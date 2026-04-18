@@ -1,29 +1,47 @@
 extends Node2D
 
-enum PlacementType { NONE, RADAR, SATELLITE }
+enum PlacementType { NONE, RADAR_WIDE, RADAR_STANDARD, SATELLITE_STANDARD, SATELLITE_TIGHT }
 
 @export var radar_scene: PackedScene
 @export var satellite_scene: PackedScene
 @export var ghost_scene: PackedScene
 
+@export var start_radar_wide := 2
+@export var start_satellite_standard := 3
+
+var inventory := {
+	PlacementType.RADAR_WIDE: 0,
+	PlacementType.RADAR_STANDARD: 0,
+	PlacementType.SATELLITE_STANDARD: 0,
+	PlacementType.SATELLITE_TIGHT: 0,
+}
+
 var current_type := PlacementType.NONE
 var ghost: Node2D
-	
+
 func _ready():
 	set_process_input(true)
+	inventory[PlacementType.RADAR_WIDE] = start_radar_wide
+	inventory[PlacementType.SATELLITE_STANDARD] = start_satellite_standard
+
+func add_inventory(type: PlacementType, amount: int):
+	inventory[type] += amount
 
 func start_placement(type: PlacementType):
+	if inventory[type] <= 0:
+		return
+
 	current_type = type
-	
+
 	if ghost:
 		ghost.queue_free()
-	
+
 	ghost = ghost_scene.instantiate()
 	add_child(ghost)
 
 func cancel_placement():
 	current_type = PlacementType.NONE
-	
+
 	if ghost:
 		ghost.queue_free()
 		ghost = null
@@ -31,21 +49,24 @@ func cancel_placement():
 func _input(event):
 	if current_type == PlacementType.NONE:
 		return
-	
+
 	if event is InputEventMouseMotion:
 		update_ghost_position()
-	
+
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			if ghost and ghost.is_valid:
 				place_object()
-		
+
 		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 			cancel_placement()
-	
+
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			cancel_placement()
+
+func _is_radar_type(type: PlacementType) -> bool:
+	return type == PlacementType.RADAR_WIDE or type == PlacementType.RADAR_STANDARD
 
 func update_ghost_position():
 	var mouse_pos = get_global_mouse_position()
@@ -53,107 +74,92 @@ func update_ghost_position():
 	if planet == null:
 		return
 
-	var angle = get_planet_surface_angle(planet, mouse_pos)
-	var radius = planet.radius
-	ghost.global_position = planet.global_position + Vector2(cos(angle), sin(angle)) * radius
-	
 	var dir = mouse_pos - planet.global_position
-	
-	match current_type:
-		PlacementType.RADAR:
-			var snapped = planet.global_position + dir.normalized() * planet.radius
-			ghost.global_position = snapped
-		
-		PlacementType.SATELLITE:
-			var dist = clamp(dir.length(), planet.radius + 20, planet.radius + 120)
-			ghost.global_position = planet.global_position + dir.normalized() * dist
-	
-	var valid = validate_position(mouse_pos)
-	ghost.set_valid(valid)
+
+	if _is_radar_type(current_type):
+		var snapped = planet.global_position + dir.normalized() * planet.radius
+		ghost.global_position = snapped
+	else:
+		var dist = clamp(dir.length(), planet.radius + 20, planet.radius + 120)
+		ghost.global_position = planet.global_position + dir.normalized() * dist
+
+	ghost.set_valid(validate_position(mouse_pos))
 
 func validate_position(pos: Vector2) -> bool:
-	match current_type:
-		PlacementType.RADAR:
-			return validate_radar(pos)
-		PlacementType.SATELLITE:
-			return validate_satellite(pos)
-	
-	return false
-	
+	if _is_radar_type(current_type):
+		return validate_radar(pos)
+	else:
+		return validate_satellite(pos)
+
 func validate_radar(pos: Vector2) -> bool:
 	var planet = get_nearest_planet(pos)
 	if planet == null:
 		return false
-	
-	var dist = pos.distance_to(planet.global_position)
-	return abs(dist - planet.radius) < 10
-	
+	return abs(pos.distance_to(planet.global_position) - planet.radius) < 10
+
 func validate_satellite(pos: Vector2) -> bool:
 	var planet = get_nearest_planet(pos)
 	if planet == null:
 		return false
-	
 	var dist = pos.distance_to(planet.global_position)
-	
-	var min_orbit = planet.radius + 20
-	var max_orbit = planet.radius + 120
-	
-	return dist > min_orbit and dist < max_orbit
-	
+	return dist > planet.radius + 20 and dist < planet.radius + 120
+
 func place_object():
 	var mouse_pos = get_global_mouse_position()
-	
-	match current_type:
-		PlacementType.RADAR:
-			place_radar_at(mouse_pos)
-		PlacementType.SATELLITE:
-			place_satellite_at(mouse_pos)
-	
+
+	if inventory[current_type] <= 0:
+		cancel_placement()
+		return
+
+	if _is_radar_type(current_type):
+		place_radar_at(mouse_pos, current_type)
+	else:
+		place_satellite_at(mouse_pos, current_type)
+
+	inventory[current_type] -= 1
 	cancel_placement()
-	
-func place_radar_at(pos: Vector2):
+
+func place_radar_at(pos: Vector2, type: PlacementType):
 	var planet = get_nearest_planet(pos)
 	if planet == null:
 		return
-	
+
 	var dir = (pos - planet.global_position).normalized()
-	var angle = dir.angle()
-	
+
 	var radar = radar_scene.instantiate()
 	add_child(radar)
-	
+
 	radar.planet = planet
-	radar.surface_angle = angle
-	
-func place_satellite_at(pos: Vector2):
+	radar.surface_angle = dir.angle()
+	radar.current_band = 0 if type == PlacementType.RADAR_WIDE else 1
+
+func place_satellite_at(pos: Vector2, type: PlacementType):
 	var planet = get_nearest_planet(pos)
 	if planet == null:
 		return
-	
+
 	var dir = pos - planet.global_position
-	var dist = dir.length()
-	
+
 	var satellite = satellite_scene.instantiate()
 	add_child(satellite)
-	
+
 	satellite.planet = planet
-	satellite.orbit_radius = dist
+	satellite.orbit_radius = dir.length()
 	satellite.angle = dir.angle()
-	
+	satellite.current_band = 1 if type == PlacementType.SATELLITE_STANDARD else 2
+
 func get_nearest_planet(pos: Vector2):
 	var planets = get_tree().get_nodes_in_group("planets")
-	
 	var closest = null
 	var closest_dist = INF
-	
+
 	for planet in planets:
 		var d = pos.distance_to(planet.global_position)
 		if d < closest_dist:
 			closest = planet
 			closest_dist = d
-	
+
 	return closest
-	
+
 func get_planet_surface_angle(planet: Node2D, world_pos: Vector2) -> float:
-	var dir = world_pos - planet.global_position
-	return dir.angle()
+	return (world_pos - planet.global_position).angle()

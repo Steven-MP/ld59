@@ -27,8 +27,9 @@ func _process(delta):
 	camera.zoom = camera.zoom.lerp(target_zoom, delta * 2.0)
 
 func pause_for_upgrade():
+	GameState.upgrade_count += 1
+	GameState.upgrade_pending = true
 	get_tree().paused = true
-	print("Upgrade time!")
 	
 func update_camera_zoom():
 	var planets = get_tree().get_nodes_in_group("planets")

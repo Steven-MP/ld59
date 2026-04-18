@@ -11,7 +11,6 @@ enum BandType { WIDE, STANDARD, TIGHT }
 
 var stored_data := 0.0
 @export var max_storage := 50.0
-@export var data_rate := 3.0
 
 func _process(delta):
 	if planet == null:
@@ -28,15 +27,9 @@ func _process(delta):
 		OrbitType.GEO_SYNC:
 			orbit_speed = planet.rotation_speed
 
-	if planet.name != "Earth":
-		stored_data += data_rate * delta
-
 	stored_data = min(stored_data, max_storage)
 
 	super._process(delta)
 
 func _ready():
 	add_to_group("connectable")
-	var indicator = load("res://scripts/DataIndicator.gd").new()
-	indicator.source = self
-	add_child(indicator)

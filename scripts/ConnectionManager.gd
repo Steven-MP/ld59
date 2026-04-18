@@ -36,8 +36,20 @@ func is_valid_connection(a, b) -> bool:
 	var settings = band_settings[a.current_band]
 
 	var distance = a.global_position.distance_to(b.global_position)
+	if distance > settings.range:
+		return false
 
-	return distance <= settings.range
+	# Receiver angle check: radars are directional (they have surface_angle).
+	# Satellites and planets are omnidirectional receivers.
+	if "surface_angle" in b and "current_band" in b and band_settings.has(b.current_band):
+		var b_settings = band_settings[b.current_band]
+		var dir_to_sender = (a.global_position - b.global_position).normalized()
+		var b_forward = b.global_transform.x
+		var recv_angle = rad_to_deg(acos(clamp(b_forward.dot(dir_to_sender), -1.0, 1.0)))
+		if recv_angle > b_settings.angle:
+			return false
+
+	return true
 
 func _draw():
 	for c in connections.values():

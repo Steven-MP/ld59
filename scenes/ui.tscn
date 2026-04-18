@@ -6,20 +6,28 @@
 script = ExtResource("1_nt7q6")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1399731526]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 160.0
+offset_bottom = 160.0
 
 [node name="ScoreLabel" type="Label" parent="VBoxContainer" unique_id=312841900]
 layout_mode = 2
 text = "Downloaded: 0 GB"
 
-[node name="Button (Place Radar)" type="Button" parent="VBoxContainer" unique_id=676477425]
+[node name="BtnWideRadar" type="Button" parent="VBoxContainer" unique_id=676477425]
 layout_mode = 2
-text = "Place Radar"
+text = "Wide Radar (0)"
 
-[node name="Button (Place Satellite)" type="Button" parent="VBoxContainer" unique_id=213962571]
+[node name="BtnStandardRadar" type="Button" parent="VBoxContainer" unique_id=676477426]
 layout_mode = 2
-text = "Place Satellite"
+text = "Std Radar (0)"
+
+[node name="BtnStandardSat" type="Button" parent="VBoxContainer" unique_id=213962571]
+layout_mode = 2
+text = "Std Satellite (0)"
+
+[node name="BtnTightSat" type="Button" parent="VBoxContainer" unique_id=213962572]
+layout_mode = 2
+text = "Tight Satellite (0)"
 
 [node name="GameOverScreen" type="ColorRect" parent="." unique_id=887341200]
 anchor_right = 1.0
@@ -32,10 +40,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -40.0
-offset_right = 100.0
-offset_bottom = 40.0
+offset_left = -120.0
+offset_top = -50.0
+offset_right = 120.0
+offset_bottom = 50.0
 alignment = 1
 
 [node name="Title" type="Label" parent="GameOverScreen/VBox" unique_id=223847100]
@@ -48,5 +56,44 @@ layout_mode = 2
 text = ""
 horizontal_alignment = 1
 
-[connection signal="pressed" from="VBoxContainer/Button (Place Radar)" to="." method="_on_place_radar_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button (Place Satellite)" to="." method="_on_place_satellite_pressed"]
+[node name="UpgradeScreen" type="ColorRect" parent="." unique_id=445665300]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.75)
+visible = false
+
+[node name="VBox" type="VBoxContainer" parent="UpgradeScreen" unique_id=556774400]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -80.0
+offset_right = 150.0
+offset_bottom = 80.0
+alignment = 1
+
+[node name="Title" type="Label" parent="UpgradeScreen/VBox" unique_id=667883500]
+layout_mode = 2
+text = "YEAR COMPLETE"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="UpgradeScreen/VBox" unique_id=778992600]
+layout_mode = 2
+text = "Choose an upgrade:"
+horizontal_alignment = 1
+
+[node name="OptionA" type="Button" parent="UpgradeScreen/VBox" unique_id=889101700]
+layout_mode = 2
+text = ""
+
+[node name="OptionB" type="Button" parent="UpgradeScreen/VBox" unique_id=990210800]
+layout_mode = 2
+text = ""
+
+[connection signal="pressed" from="VBoxContainer/BtnWideRadar" to="." method="_on_btn_wide_radar_pressed"]
+[connection signal="pressed" from="VBoxContainer/BtnStandardRadar" to="." method="_on_btn_standard_radar_pressed"]
+[connection signal="pressed" from="VBoxContainer/BtnStandardSat" to="." method="_on_btn_standard_sat_pressed"]
+[connection signal="pressed" from="VBoxContainer/BtnTightSat" to="." method="_on_btn_tight_sat_pressed"]
+[connection signal="pressed" from="UpgradeScreen/VBox/OptionA" to="." method="_on_option_a_pressed"]
+[connection signal="pressed" from="UpgradeScreen/VBox/OptionB" to="." method="_on_option_b_pressed"]
