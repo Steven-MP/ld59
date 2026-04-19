@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c0iafohdluxyp"]
 
 [ext_resource type="Script" uid="uid://c4at052grwtu0" path="res://scripts/UI.gd" id="1_nt7q6"]
+[ext_resource type="Script" path="res://scripts/YearIndicator.gd" id="2_yearind"]
 
 [node name="UI" type="CanvasLayer" unique_id=758622985]
 script = ExtResource("1_nt7q6")
@@ -28,6 +29,17 @@ text = "Std Satellite (0)"
 [node name="BtnTightSat" type="Button" parent="VBoxContainer" unique_id=213962572]
 layout_mode = 2
 text = "Tight Satellite (0)"
+
+[node name="YearIndicator" type="Control" parent="." unique_id=101010101]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_left = -346.0
+offset_right = -10.0
+offset_top = 10.0
+offset_bottom = 34.0
+script = ExtResource("2_yearind")
 
 [node name="GameOverScreen" type="ColorRect" parent="." unique_id=887341200]
 anchor_right = 1.0

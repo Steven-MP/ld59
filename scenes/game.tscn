@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cyeic0wfql6sn" path="res://scenes/object_manager.tscn" id="4_gee14"]
 [ext_resource type="PackedScene" uid="uid://bhxqvstxwo26w" path="res://scenes/solar_system.tscn" id="5_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://c0iafohdluxyp" path="res://scenes/ui.tscn" id="6_vtaks"]
+[ext_resource type="Script" path="res://scripts/OrbitRenderer.gd" id="7_orbit"]
 
 [node name="Game" type="Node2D" unique_id=620067186]
 script = ExtResource("1_uwrxv")
@@ -17,5 +18,8 @@ script = ExtResource("1_uwrxv")
 [node name="ObjectManager" parent="." unique_id=1734409104 instance=ExtResource("4_gee14")]
 
 [node name="SolarSystem" parent="." unique_id=283654343 instance=ExtResource("5_0tnpc")]
+
+[node name="OrbitRenderer" type="Node2D" parent="." unique_id=112233445]
+script = ExtResource("7_orbit")
 
 [node name="UI" parent="." unique_id=55848463 instance=ExtResource("6_vtaks")]

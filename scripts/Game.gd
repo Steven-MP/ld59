@@ -23,6 +23,7 @@ const PAN_LERP_SPEED := 4.0
 
 func _process(delta):
 	year_timer += delta
+	GameState.year_timer = year_timer
 
 	if year_timer >= unlock_time and not unlock_triggered:
 		unlock_triggered = true
@@ -82,9 +83,11 @@ func _update_base_zoom():
 	var min_z := base_zoom  # start from current — never increase automatically
 
 	for planet in planets:
+		if not ("orbit_radius" in planet):
+			continue  # skip nodes without an orbit (e.g. Sun)
 		var r = planet.orbit_radius
 		if r < 10.0:
-			continue  # skip anything at the centre (Sun etc.)
+			continue
 		# Worst-case position is directly above/below or left/right of centre,
 		# so check both axes independently against the orbit radius.
 		min_z = min(min_z, vp.x * 0.5 / r * padding)

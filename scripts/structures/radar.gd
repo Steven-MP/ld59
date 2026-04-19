@@ -24,7 +24,7 @@ func _process(delta):
 	var direction = Vector2(cos(effective_angle), sin(effective_angle))
 
 	global_position = planet.global_position + direction * (planet_radius + radius_offset)
-	global_rotation = direction.angle()
+	global_rotation = direction.angle() + PI / 2.0
 
 	stored_data = min(stored_data, max_storage)
 

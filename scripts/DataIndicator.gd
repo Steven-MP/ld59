@@ -17,11 +17,8 @@ func _process(_delta):
 	if pct >= 1.0:
 		GameState.game_over = true
 
-	var offset_y = -25.0
-	if "radius" in source:
-		offset_y = -(source.radius + 25.0)
-
-	global_position = source.global_position + Vector2(0, offset_y)
+	# Sit directly on the planet centre
+	global_position = source.global_position
 	queue_redraw()
 
 func _is_data_source() -> bool:
@@ -32,6 +29,14 @@ func _is_data_source() -> bool:
 	if "planet" in source and source.planet != null and source.planet.name == "Earth":
 		return false
 	return true
+
+func _visual_radius() -> float:
+	var sprite = source.get_node_or_null("Sprite2D")
+	if sprite and sprite.texture:
+		return sprite.texture.get_size().y * 0.5 * source.scale.y
+	if "radius" in source:
+		return source.radius * source.scale.y
+	return 20.0
 
 func _draw():
 	if source == null or not _is_data_source():
@@ -47,23 +52,30 @@ func _draw():
 	else:
 		arc_color = Color.RED
 
-	var arc_r = 14.0
+	var arc_r = _visual_radius()
 	var arc_width = 3.0
-	var point_count = 48
+	var point_count = 64
 
-	# Background ring
-	draw_arc(Vector2.ZERO, arc_r, 0, TAU, point_count, Color(0.15, 0.15, 0.15, 0.75), arc_width)
+	# Dark background ring so the arc reads against any planet colour
+	draw_arc(Vector2.ZERO, arc_r, 0, TAU, point_count,
+			Color(0.0, 0.0, 0.0, 0.55), arc_width + 2.0)
 
 	# Progress arc: starts at top (-PI/2), fills clockwise
 	if pct > 0.0:
 		draw_arc(Vector2.ZERO, arc_r, -PI / 2.0, -PI / 2.0 + TAU * pct,
 				max(3, int(point_count * pct)), arc_color, arc_width)
 
-	# Percentage text centred inside the ring
+	# Percentage text centred on the planet
 	var font = ThemeDB.fallback_font
-	var font_size = 7
+	var font_size = 18
 	var text = "%d%%" % int(pct * 100)
-	var text_width = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+
+	# Fix background to the widest possible string ("100%") so it never resizes
+	var max_size = font.get_string_size("100%", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+	var bg_radius = max(max_size.x, max_size.y) * 0.75 * 0.8
+	draw_circle(Vector2.ZERO, bg_radius, Color(0.0, 0.0, 0.0, 0.75))
+
+	var text_size = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
 	var ascent = font.get_ascent(font_size)
-	draw_string(font, Vector2(-text_width / 2.0, ascent / 2.0),
-			text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, arc_color)
+	var text_pos = Vector2(-text_size.x / 2.0, ascent / 2.0)
+	draw_string(font, text_pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, arc_color)

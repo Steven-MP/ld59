@@ -104,8 +104,8 @@ func update_connections(delta):
 
 			
 func is_line_blocked(a: Node2D, b: Node2D) -> bool:
-	var planets = get_tree().get_nodes_in_group("planets")
-	
+	var planets = get_tree().get_nodes_in_group("planets") + get_tree().get_nodes_in_group("sun")
+
 	for planet in planets:
 		# Ignore if one of the endpoints is on this planet
 		if a == planet or b == planet:
@@ -139,12 +139,15 @@ func is_line_blocked(a: Node2D, b: Node2D) -> bool:
 func collect_planet_data(delta):
 	var collection_rate := 15.0
 	for node in get_tree().get_nodes_in_group("connectable"):
-		if not ("planet" in node):
+		# Only radars can extract data from a planet — satellites cannot
+		if not ("surface_angle" in node):
 			continue
 		var planet = node.planet
-		if planet == null or not ("stored_data" in planet) or planet.stored_data <= 0:
+		if planet == null or planet.name == "Earth":
 			continue
-		if not ("stored_data" in node) or node.stored_data >= node.max_storage:
+		if not ("stored_data" in planet) or planet.stored_data <= 0:
+			continue
+		if node.stored_data >= node.max_storage:
 			continue
 		var transfer = min(collection_rate * delta, planet.stored_data, node.max_storage - node.stored_data)
 		planet.stored_data -= transfer
@@ -164,8 +167,8 @@ func transfer_data(delta):
 		var settings = band_settings[c.band]
 		var transfer = min(settings.bandwidth * delta, a.stored_data)
 
-		# Earth is the sink — score the data
-		if b.is_in_group("earth"):
+		# A radar placed on Earth is the only valid download point
+		if "surface_angle" in b and "planet" in b and b.planet != null and b.planet.is_in_group("earth"):
 			a.stored_data -= transfer
 			GameState.score += transfer
 		elif "stored_data" in b:

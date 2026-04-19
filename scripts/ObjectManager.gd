@@ -37,6 +37,7 @@ func start_placement(type: PlacementType):
 		ghost.queue_free()
 
 	ghost = ghost_scene.instantiate()
+	ghost.placement_mode = "radar" if _is_radar_type(type) else "satellite"
 	add_child(ghost)
 
 func cancel_placement():
@@ -77,11 +78,15 @@ func update_ghost_position():
 	var dir = mouse_pos - planet.global_position
 
 	if _is_radar_type(current_type):
-		var snapped = planet.global_position + dir.normalized() * planet.radius
-		ghost.global_position = snapped
+		var snapped_dir = dir.normalized()
+		ghost.global_position = planet.global_position + snapped_dir * planet.radius
+		# Face outward from planet surface
+		ghost.global_rotation = snapped_dir.angle()
 	else:
-		var dist = clamp(dir.length(), planet.radius + 20, planet.radius + 120)
+		var dist = clamp(dir.length(), planet.radius + 20, planet.radius + 60)
 		ghost.global_position = planet.global_position + dir.normalized() * dist
+		ghost.orbit_center = planet.global_position
+		ghost.orbit_radius = dist
 
 	ghost.set_valid(validate_position(mouse_pos))
 
@@ -92,17 +97,14 @@ func validate_position(pos: Vector2) -> bool:
 		return validate_satellite(pos)
 
 func validate_radar(pos: Vector2) -> bool:
-	var planet = get_nearest_planet(pos)
-	if planet == null:
-		return false
-	return abs(pos.distance_to(planet.global_position) - planet.radius) < 10
+	return get_nearest_planet(pos) != null
 
 func validate_satellite(pos: Vector2) -> bool:
 	var planet = get_nearest_planet(pos)
 	if planet == null:
 		return false
 	var dist = pos.distance_to(planet.global_position)
-	return dist > planet.radius + 20 and dist < planet.radius + 120
+	return dist > planet.radius + 20 and dist < planet.radius + 60
 
 func place_object():
 	var mouse_pos = get_global_mouse_position()
@@ -130,8 +132,9 @@ func place_radar_at(pos: Vector2, type: PlacementType):
 	add_child(radar)
 
 	radar.planet = planet
-	radar.surface_angle = dir.angle()
+	radar.surface_angle = dir.angle() - planet.rotation
 	radar.current_band = 0 if type == PlacementType.RADAR_WIDE else 1
+	radar.scale = Vector2(0.2, 0.2)
 
 func place_satellite_at(pos: Vector2, type: PlacementType):
 	var planet = get_nearest_planet(pos)
@@ -147,6 +150,7 @@ func place_satellite_at(pos: Vector2, type: PlacementType):
 	satellite.orbit_radius = dir.length()
 	satellite.angle = dir.angle()
 	satellite.current_band = 1 if type == PlacementType.SATELLITE_STANDARD else 2
+	satellite.scale = Vector2(0.2, 0.2)
 
 func get_nearest_planet(pos: Vector2):
 	var planets = get_tree().get_nodes_in_group("planets")

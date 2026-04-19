@@ -26,7 +26,6 @@ func _ready():
 
 	if name == "Earth":
 		add_to_group("earth")
-		add_to_group("connectable")
 	else:
 		_add_indicator()
 
